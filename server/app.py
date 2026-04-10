@@ -34,12 +34,10 @@ async def health():
 
 def main():
     import uvicorn
-    # Use port 7860 for compatibility with HF Spaces and Docker
     uvicorn.run(
         "server.app:app",
         host="0.0.0.0",
-        port=7860,
-        reload=False
+        port=7860
     )
 
 if __name__ == "__main__":

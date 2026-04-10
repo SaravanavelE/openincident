@@ -185,12 +185,6 @@ if __name__ == "__main__":
     tasks = ["easy", "medium", "hard"]
     overall_score = 0.0
 
-    print("Running Meta Hackathon Evaluation for OpenIncident...")
-
     for task in tasks:
         score = run_evaluation(task)
         overall_score += score
-
-    performance = overall_score / len(tasks)
-    # Global score line (informational)
-    print(f"--- Global Performance Score: {performance:.2f} ---")

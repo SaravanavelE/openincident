@@ -1,0 +1,19 @@
+[project]
+name = "openincident"
+version = "1.0.0"
+description = "OpenIncident DevOps Environment"
+requires-python = ">=3.10"
+
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "requests",
+    "openai",
+    "python-dotenv",
+    "pyyaml",
+    "openenv-core>=0.2.0"
+]
+
+[project.scripts]
+server = "server.app:main"
