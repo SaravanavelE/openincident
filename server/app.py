@@ -9,7 +9,8 @@ env = OpenIncidentEnv()
 @app.post("/reset")
 async def reset(task_id: str = "easy"):
     try:
-        return env.reset(task_id)
+        obs = env.reset(task_id)
+        return {"observation": obs}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -31,6 +32,15 @@ async def get_state():
 async def health():
     return {"status": "ok", "project": "OpenIncident"}
 
-if __name__ == "__main__":
+def main():
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # Use port 7860 for compatibility with HF Spaces and Docker
+    uvicorn.run(
+        "server.app:app",
+        host="0.0.0.0",
+        port=7860,
+        reload=False
+    )
+
+if __name__ == "__main__":
+    main()
