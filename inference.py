@@ -11,7 +11,7 @@ from openai import OpenAI
 API_BASE_URL = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
 ENV_BASE_URL = os.getenv("ENV_BASE_URL", "http://localhost:7860")
 MODEL_NAME = os.getenv("MODEL_NAME", "gpt-4o-mini")
-HF_TOKEN = os.getenv("HF_TOKEN", "")
+HF_TOKEN = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
 
 # HF_TOKEN Validation
 if not HF_TOKEN:
@@ -61,7 +61,7 @@ Action:"""
                 ],
                 temperature=0.0,
                 max_tokens=10,
-                timeout=15
+                timeout=8
             )
 
             action = response.choices[0].message.content.strip().lower()
