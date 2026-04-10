@@ -1,7 +1,6 @@
 class HardTask:
 
     def __init__(self):
-        self.steps = 0
         self.stage = 0
 
     def get_state(self):
@@ -20,6 +19,6 @@ class HardTask:
             return self.get_state(), 0.5, False
 
         if self.stage == 2 and action == "restart_service":
-            return self.get_state(), 0.99, True
+            return self.get_state(), 0.98, True
 
         return self.get_state(), 0.05, False
