@@ -4,7 +4,7 @@ from models import ActionEnum, EnvObservation, StepResponse
 
 class OpenIncidentClient:
     """ Client to communicate with the OpenIncident server. """
-    def __init__(self, base_url: str = "http://localhost:8000"):
+    def __init__(self, base_url: str = "http://localhost:7860"):
         self.base_url = base_url
 
     def reset(self, task_id: str = "easy") -> EnvObservation:
