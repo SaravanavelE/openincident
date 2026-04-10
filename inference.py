@@ -182,7 +182,9 @@ def run_evaluation(task_id):
         f"rewards={rewards_str}"
     )
 
-    return total_reward
+    task_score = total_reward / max(1, len(rewards))
+    task_score = max(0.01, min(0.99, task_score))
+    return task_score
 
 
 if __name__ == "__main__":
