@@ -45,7 +45,7 @@ The environment returns a state observation containing:
 | Medium | 🟡 Medium  | Memory Leak Fix | 3 | 1.00 |
 | Hard   | 🔴 Hard    | Cascading Drift | 4 | 0.90 |
 
-*Scores are normalized between 0.0 — 1.0.*
+*Scores are normalized between 0.01 — 0.99.*
 
 ## 🚀 Setup Instructions
 
