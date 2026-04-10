@@ -42,7 +42,7 @@ tasks:
     description: "Handle a cascading microservice failure."
     difficulty: "hard"
     max_steps: 15
-    reward_range: [0.0, 1.0]
+    reward_range: [0.01, 0.99]
 
 # Deployment configuration
 deploy:
