@@ -122,7 +122,7 @@ class OpenIncidentEnv:
         # Normalize reward returned for this step.
         # OpenEnv hackathon asks for total reward between 0-1.
         # We ensure the raw step reward, when scaled by max possible, fits this.
-        normalized_step_reward = max(0.0, step_raw_reward / self.max_possible_raw_reward)
+        normalized_step_reward = max(0.01, min(0.99, step_raw_reward / self.max_possible_raw_reward))
 
         return StepResponse(
             observation=self._get_observation(),

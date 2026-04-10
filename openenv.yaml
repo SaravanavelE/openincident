@@ -32,12 +32,12 @@ tasks:
     description: "Resolve a single service CPU spike using restart_service."
     difficulty: "easy"
     max_steps: 5
-    reward_range: [0.0, 1.0]
+    reward_range: [0.01, 0.99]
   - id: "medium"
     description: "Identify a memory leak, kill the leaking process, and restart the service."
     difficulty: "medium"
     max_steps: 10
-    reward_range: [0.0, 1.0]
+    reward_range: [0.01, 0.99]
   - id: "hard"
     description: "Handle a cascading microservice failure."
     difficulty: "hard"
