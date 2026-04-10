@@ -62,7 +62,7 @@ class OpenIncidentEnv:
         if not self.current_state.incident_active:
              return StepResponse(
                 observation=self._get_observation(),
-                reward=0.0,
+                reward=0.01,
                 done=True,
                 info={"message": "Environment is already in a terminal state."}
             )
