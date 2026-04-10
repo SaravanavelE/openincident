@@ -159,7 +159,7 @@ def run_evaluation(task_id):
 
         # Required stdout format
         print(
-            f"[STEP] step={step_num} action={action} reward={reward:.2f} "
+            f"[STEP]  step={step_num} action={action} reward={reward:.2f} "
             f"done={str(done).lower()} error=null"
         )
 
@@ -171,9 +171,9 @@ def run_evaluation(task_id):
 
     rewards_str = ",".join(rewards)
     
-    # Required [END] format (Removed score=)
+    # Required [END] format (Strict alignment)
     print(
-        f"[END] success={str(success).lower()} "
+        f"[END]   success={str(success).lower()} "
         f"steps={step_num-1} "
         f"rewards={rewards_str}"
     )
