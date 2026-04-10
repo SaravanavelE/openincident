@@ -1,12 +1,25 @@
-from pydantic import BaseModel
-from typing import List, Dict, Any
+class HardTask:
 
-class TaskConfig(BaseModel):
-    id: str = "hard"
-    alert: str = "Microservice cascading failure: Suspected config drift on 'auth-gateway'."
-    target_sequence: List[str] = ["change_config", "restart_service", "scale_up", "clear_cache"]
-    initial_stats: Dict[str, float] = {"cpu": 90.0, "memory": 88.0}
-    initial_logs: List[str] = ["ERR: Invalid sequence in config.", "WARN: Cluster nodes dropping out."]
+    def __init__(self):
+        self.steps = 0
+        self.stage = 0
 
-# Default task instance
-task_data = TaskConfig().dict()
+    def get_state(self):
+        return {
+            "stage": self.stage
+        }
+
+    def step(self, action):
+
+        if self.stage == 0 and action == "check_logs":
+            self.stage = 1
+            return self.get_state(), 0.3, False
+
+        if self.stage == 1 and action == "clear_cache":
+            self.stage = 2
+            return self.get_state(), 0.5, False
+
+        if self.stage == 2 and action == "restart_service":
+            return self.get_state(), 0.99, True
+
+        return self.get_state(), 0.05, False

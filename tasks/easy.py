@@ -1,12 +1,19 @@
-from pydantic import BaseModel
-from typing import List, Dict, Any
+class EasyTask:
 
-class TaskConfig(BaseModel):
-    id: str = "easy"
-    alert: str = "High CPU usage detected on service 'web-api'."
-    target_sequence: List[str] = ["restart_service"]
-    initial_stats: Dict[str, float] = {"cpu": 85.0, "memory": 40.0}
-    initial_logs: List[str] = ["WARN: Resource depletion starting.", "ERROR: Request timeout recurring."]
+    def __init__(self):
+        self.steps = 0
+        self.done = False
 
-# Default task instance
-task_data = TaskConfig().dict()
+    def get_state(self):
+        return {
+            "status": "service_down"
+        }
+
+    def step(self, action):
+        self.steps += 1
+
+        if action == "restart_service":
+            self.done = True
+            return self.get_state(), 0.99, True
+
+        return self.get_state(), 0.05, False
