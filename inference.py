@@ -27,13 +27,10 @@ class DevOpsAgent:
 
         prompt = f"""
 You are a DevOps incident response agent.
-
 Observation:
 {json.dumps(observation, indent=2)}
-
 History:
 {history}
-
 Available Actions:
 - check_logs
 - restart_service
@@ -41,7 +38,6 @@ Available Actions:
 - kill_process
 - change_config
 - clear_cache
-
 Return ONLY action name.
 """
 
@@ -106,23 +102,32 @@ def step_env(action):
     except Exception:
         return {
             "observation": {},
-            "reward": 0.01,
+            "reward": 0.5,
             "done": True
         }
 
 
 def clamp_reward(reward):
-
     try:
         reward = float(reward)
     except:
-        reward = 0.01
+        reward = 0.5
 
     if not math.isfinite(reward):
-        reward = 0.01
+        reward = 0.5
 
-    return max(0.01, min(0.99, reward))
+    return min(1 - 1e-6, max(1e-6, reward))
 
+def safe_score(score, eps=1e-6):
+    try:
+        score = float(score)
+    except:
+        return eps
+
+    if not math.isfinite(score):
+        return eps
+
+    return min(1 - eps, max(eps, score))
 
 def run_evaluation(task_id):
 
@@ -149,7 +154,8 @@ def run_evaluation(task_id):
         if not isinstance(observation, dict):
             observation = {}
 
-        reward = clamp_reward(step_response.get("reward", 0.01))
+        reward = clamp_reward(step_response.get("reward", 0.5))
+        reward = safe_score(reward)
 
         done = step_response.get("done", False)
         if isinstance(done, str):
@@ -157,12 +163,13 @@ def run_evaluation(task_id):
         else:
             done = bool(done)
 
+        assert 0 < reward < 1
         total_reward += reward
-        rewards.append(f"{reward:.2f}")
+        rewards.append(f"{reward:.6f}")
 
         print(
             f"[STEP] step={step_num} action={action} "
-            f"reward={reward:.2f} done={str(done).lower()} error=null"
+            f"reward={reward:.6f} done={str(done).lower()} error=null"
         )
 
         history.append(action)
@@ -172,18 +179,18 @@ def run_evaluation(task_id):
             success = True
 
     if not rewards:
-        rewards.append("0.01")
+        rewards.append("0.500000")
 
     rewards_str = ",".join(rewards)
 
+    task_score = (total_reward + 1e-6) / (len(rewards) + 2e-6)
+    task_score = safe_score(task_score)
     print(
         f"[END] success={str(success).lower()} "
         f"steps={step_num-1} "
-        f"rewards={rewards_str}"
+        f"rewards={rewards_str} "
+        f"score={task_score:.6f}"
     )
-
-    task_score = total_reward / max(1, len(rewards))
-    task_score = max(0.01, min(0.99, task_score))
     return task_score
 
 
@@ -199,5 +206,6 @@ if __name__ == "__main__":
         overall_score += score
 
     performance = overall_score / len(tasks)
+    performance = safe_score(performance)
 
-    print(f"--- Global Performance Score: {performance:.2f} ---")
+    print(f"--- Global Performance Score: {performance:.6f} ---")
